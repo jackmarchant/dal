@@ -290,6 +290,13 @@ defmodule DAL do
     Ecto.Repo.Preloader.preload(struct_or_structs_or_nil, DAL, preloads, opts)
   end
 
+  # The `Repo.in_transaction?/0` callback is used to
+  # determine whether Ecto can preload associations
+  # in parallel. DAL doesn't support function
+  # transactions, so it's not possible to be
+  # inside a transaction while preloading.
+  def in_transaction?, do: false
+
   defp execute(target, function, args) do
     target
     |> discover()

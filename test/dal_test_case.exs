@@ -64,6 +64,15 @@ defmodule DALTest.Case do
     end
   end
 
+  def create_band_with_genre(_) do
+    {:ok, genre} = %Genre{name: "Thrash"} |> Repo.insert
+    {:ok, band} =
+      %Band{name: "Metallica", genre: genre}
+      |> Repo.insert
+
+    %{band: band}
+  end
+
   def create_band(_) do
     {:ok, band} =
       %Band{name: "Metallica"}

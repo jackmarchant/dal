@@ -68,4 +68,22 @@ defmodule DALTest.Preload do
       assert loaded == albums
     end
   end
+
+  describe "Preloading many associations at the same time" do
+    setup [
+      :create_band_with_genre,
+      :create_many_albums
+    ]
+
+    test "it loads many associations via preload",
+      %{band: band} do
+
+      preloaded = DAL.preload(band, [:albums, :genre])
+
+      genre = Map.get(preloaded, :genre)
+
+      assert length(Map.get(preloaded, :albums)) == 2
+      assert genre.name == "Thrash"
+    end
+  end
 end
